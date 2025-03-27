@@ -121,10 +121,7 @@ export const Chat = ({ userData, setUserData, library, setLibrary, recommendatio
 
 	function fetchLibrary() {
 		axios
-			.post(`${backend}/getlibrary`, {
-				username: userData.username,
-				password: userData.password,
-			})
+			.get(`${backend}/getlibrary?username=${userData.username}`)
 			.then((response) => {
 				setLibrary(response.data);
 				console.log(response.data);
@@ -162,6 +159,8 @@ export const Chat = ({ userData, setUserData, library, setLibrary, recommendatio
 				fetchRecommendations();
 			})
 			.catch((error) => console.error(error));
+
+		setInput("");
 	};
 
 	const RecommendationsGrid = () => {
@@ -269,7 +268,12 @@ export const Chat = ({ userData, setUserData, library, setLibrary, recommendatio
 			</div>
 			<RecommendationsGrid />
 			<div id="input-and-send">
-				<input onChange={(e) => setInput(e.target.value)} value={input} placeholder="Digite sua mensagem"></input>
+				<input onKeyDown={(e)=>{
+					if (e.key == "Enter"){
+						sendMessage();
+					}
+				}} 
+				onChange={(e) => setInput(e.target.value)} value={input} placeholder="Digite sua mensagem"></input>
 				<button
 					onClick={() => {
 						sendMessage();
