@@ -1,16 +1,3 @@
-@keyframes floatDown {
-  from {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
 /* Container for the images */
 #library-container {
   display: flex;
@@ -23,7 +10,7 @@
 
 #library {
   display: grid;
-  background-color: var(--box-color);
+  background-color: rgba(0, 43, 92, 0.5);
   grid-template-columns: repeat(auto-fit, 100px);
   grid-template-rows: repeat(auto-fit, 135px);
   gap: 10px;
@@ -38,6 +25,7 @@
   @media(max-width: 876px) {
     grid-template-columns: repeat(auto-fit, 90px);
     grid-template-rows: repeat(auto-fit, 120px);
+    height: 40vh;
   }
 
   #game-card {
@@ -144,7 +132,7 @@
     }
 
     .active-filter {
-      background-color: #4a90e2;
+      background-color: var(--primary-color);
       transform: translateY(-2px);
     }
 

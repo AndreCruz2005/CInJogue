@@ -9,6 +9,8 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
+    backdrop-filter: blur(6px);
+
 }
 
 #info-box {
@@ -40,10 +42,20 @@
 #close-button {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 1.3rem;
     cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    font-weight: bold;
+    transition: 0.2s;
+}
+
+#close-button:hover {
+    background-color: var(--error-color);
 }
 
 #content {
@@ -182,7 +194,7 @@
 
 #remove-button:hover,
 #reject-button:hover {
-    background-color: #c95454;
+    background-color: var(--error-color);
 }
 
 #add-button:hover {

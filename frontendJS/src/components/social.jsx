@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { backend } from "../global";
 import "./../styles/social.css";
 
-export const Social = ({ userData, socialStatus, setSocialStatus }) => {
+export const Social = ({ userData, socialStatus, setSocialStatus, fetchLibrary }) => {
 	const [searchedUser, setSearchedUser] = useState(userData.username);
 	const [visualizedLibrary, setVisualizedLibrary] = useState([]);
 
@@ -22,7 +22,20 @@ export const Social = ({ userData, socialStatus, setSocialStatus }) => {
 
 	const LibraryItem = ({ game }) => {
 		return (
-			<div id="library-item">
+			<div
+				id="library-item"
+				onDoubleClick={() => {
+					axios
+						.post(`${backend}/addgametolibrary`, {
+							username: userData.username,
+							password: userData.password,
+							title: game.title,
+						})
+						.then(() => {
+							fetchLibrary();
+						});
+				}}
+			>
 				<p>{game.title}</p>
 				<img src={game.data.image.original_url}></img>
 				<p>{game.state}</p>
@@ -30,6 +43,10 @@ export const Social = ({ userData, socialStatus, setSocialStatus }) => {
 			</div>
 		);
 	};
+
+	useEffect(() => {
+		fetchLibrary();
+	}, [socialStatus]);
 
 	return socialStatus ? (
 		<div id="social-layer">
@@ -43,17 +60,18 @@ export const Social = ({ userData, socialStatus, setSocialStatus }) => {
 					>
 						X
 					</button>
-					<p>Insira o nome de um usuário e pressione ENTER para visualizar sua biblioteca aqui.</p>
-					<input
-						value={searchedUser}
-						onChange={(e) => setSearchedUser(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key == "Enter") {
-								fetchLibrary();
-							}
-						}}
-					></input>
 				</div>
+				<p>Insira o nome de um usuário e pressione ENTER para visualizar sua biblioteca aqui.</p>
+				<input
+					value={searchedUser}
+					placeholder="Nome de usuário"
+					onChange={(e) => setSearchedUser(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key == "Enter") {
+							fetchLibrary();
+						}
+					}}
+				></input>
 				<div id="visualized-library">
 					{visualizedLibrary.map((it, i) => {
 						return <LibraryItem key={i} game={it} />;
